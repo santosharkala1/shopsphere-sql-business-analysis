@@ -57,3 +57,54 @@ ORDER BY delivered_sales_amount DESC;
 -- These amounts use the recorded amount column.
 -- Discount adjustments have not been applied.
 -- =====================================================
+
+
+-- =====================================================
+-- BUSINESS QUESTION 2:
+-- Which product category generates the highest
+-- completed sales amount?
+-- =====================================================
+
+-- OBJECTIVE:
+-- Compare delivered sales across product categories
+-- from both Online and Store sales channels.
+
+SELECT
+    category,
+    COUNT(*) AS delivered_orders,
+    SUM(amount) AS total_sales_amount
+FROM (
+    SELECT category, amount, status
+    FROM online_sales
+
+    UNION ALL
+
+    SELECT category, amount, status
+    FROM store_sales
+) AS combined_sales
+WHERE status = 'Delivered'
+GROUP BY category
+ORDER BY total_sales_amount DESC;
+
+-- =====================================================
+-- RESULTS:
+-- Electronics:  6 orders | Sales Amount: 82500
+-- Furniture:    3 orders | Sales Amount: 40000
+-- Accessories:  2 orders | Sales Amount: 8500
+-- =====================================================
+
+-- BUSINESS INSIGHT:
+-- Electronics is the highest-performing category,
+-- generating approximately 63% of the total
+-- delivered sales amount in this sample.
+--
+-- Furniture ranks second, followed by Accessories.
+--
+-- These findings describe the sales mix in a
+-- small sample and do not establish long-term trends.
+--
+-- NOTE:
+-- Sales amounts are based on the amount column.
+-- Discounts have not been applied.
+-- =====================================================
+  
