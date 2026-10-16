@@ -107,4 +107,63 @@ ORDER BY total_sales_amount DESC;
 -- Sales amounts are based on the amount column.
 -- Discounts have not been applied.
 -- =====================================================
+
+
+-- =====================================================
+-- BUSINESS QUESTION 3:
+-- Which customer cities generate the highest
+-- completed sales amounts?
+-- =====================================================
+
+-- OBJECTIVE:
+-- Identify the cities contributing the most
+-- completed sales across both sales channels.
+
+SELECT
+    city,
+    COUNT(*) AS delivered_orders,
+    SUM(amount) AS total_sales_amount
+FROM (
+    SELECT city, amount, status
+    FROM online_sales
+
+    UNION ALL
+
+    SELECT city, amount, status
+    FROM store_sales
+) AS combined_sales
+WHERE status = 'Delivered'
+GROUP BY city
+ORDER BY total_sales_amount DESC;
+
+-- =====================================================
+-- VERIFIED RESULTS:
+-- Hyderabad: 5 orders | 77000
+-- Delhi:     2 orders | 29000
+-- Chennai:   1 order  | 11000
+-- Pune:      2 orders | 9000
+-- Bengaluru: 1 order  | 5000
+--
+-- Total: 11 delivered orders | 131000
+-- =====================================================
+
+-- BUSINESS INSIGHT:
+-- Hyderabad generated the highest delivered sales
+-- amount, contributing approximately 58.8% of the
+-- total across both sales channels.
+--
+-- Delhi ranked second with a sales amount of 29000.
+--
+-- Sales are concentrated among Hyderabad customers
+-- in this small sample dataset.
+--
+-- A larger dataset is required before making
+-- location-specific business investment decisions.
+--
+-- NOTE:
+-- City represents the customer's city, not
+-- necessarily the physical store location.
+-- Amounts are before separate discount adjustments.
+-- =====================================================
+  
   
