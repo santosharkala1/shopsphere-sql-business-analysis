@@ -165,5 +165,91 @@ ORDER BY total_sales_amount DESC;
 -- necessarily the physical store location.
 -- Amounts are before separate discount adjustments.
 -- =====================================================
-  
+
+
+-- =====================================================
+-- BUSINESS QUESTION 4:
+-- Which products generate the highest completed sales
+-- and what percentage does each contribute?
+-- =====================================================
+
+-- OBJECTIVE:
+-- Rank products by completed sales amount and
+-- calculate their percentage contribution.
+
+WITH delivered_sales AS (
+    SELECT product, amount
+    FROM online_sales
+    WHERE status = 'Delivered'
+
+    UNION ALL
+
+    SELECT product, amount
+    FROM store_sales
+    WHERE status = 'Delivered'
+),
+
+product_sales AS (
+    SELECT
+        product,
+        COUNT(*) AS delivered_orders,
+        SUM(amount) AS total_sales_amount
+    FROM delivered_sales
+    GROUP BY product
+)
+
+SELECT
+    product,
+    delivered_orders,
+    total_sales_amount,
+
+    DENSE_RANK() OVER (
+        ORDER BY total_sales_amount DESC
+    ) AS sales_rank,
+
+    ROUND(
+        100.0 * total_sales_amount /
+        SUM(total_sales_amount) OVER (),
+        2
+    ) AS sales_contribution_pct
+
+FROM product_sales
+ORDER BY sales_rank, product;
+
+
+-- =====================================================
+-- VERIFIED TOP 5 RESULTS:
+-- =====================================================
+
+-- Rank 1: Laptop       | 65000 | 49.62%
+-- Rank 2: Desk         | 23000 | 17.56%
+-- Rank 3: Office Chair | 17000 | 12.98%
+-- Rank 4: Keyboard     | 7500  | 5.73%
+-- Rank 5: Backpack     | 6000  | 4.58%
+
+-- Total delivered sales amount: 131000
+
+
+-- =====================================================
+-- BUSINESS INSIGHTS:
+-- =====================================================
+
+-- 1. Laptop generated the highest completed sales
+--    amount, contributing 49.62% of total sales.
+
+-- 2. Laptop, Desk, and Office Chair together
+--    contributed approximately 80.15% of sales.
+
+-- 3. Sales are concentrated among a small number
+--    of products in this sample dataset.
+
+-- 4. A larger dataset and profitability analysis
+--    would be required before making inventory
+--    or investment recommendations.
+
+-- NOTE:
+-- Recorded sales amounts are used before any
+-- separate discount adjustments.
+-- =====================================================
+
   
