@@ -10,14 +10,29 @@ store channels.
 The project focuses on answering business questions
 through SQL queries and communicating actionable insights.
 
-## Tools and Skills
 
-- MySQL
-- SQL Joins and Aggregations
+## 🛠️ Tools and Technical Skills
+
+**Database:** MySQL
+
+**SQL Techniques:**
 - UNION ALL
+- WHERE and filtering
 - GROUP BY and ORDER BY
-- Business Analysis
-- Data Interpretation
+- COUNT() and SUM()
+- Aggregate analysis
+- Subqueries
+
+**Data Visualization:**
+- Python
+- Matplotlib
+
+**Business Analysis:**
+- Sales Channel Performance
+- Product Category Analysis
+- Geographic Sales Analysis
+- Business Insight Generation
+
 
 ## Dataset
 
